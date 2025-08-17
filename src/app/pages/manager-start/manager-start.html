@@ -1,1 +1,48 @@
-<p>manager-start works!</p>
+<!-- manager-start.html -->
+<div class="manager-dashboard">
+    <!-- Левая панель -->
+    <div class="left-panel">
+        <div class="projects-section">
+            <div class="projects-list">
+                <button *ngFor="let project of projects" class="project-button">
+                    {{ project.name }} ({{ project.activeTasks }}/{{ project.totalTasks }})
+                </button>
+            </div>
+        </div>
+
+        <div class="actions-section">
+            <button class="action-button" (click)="navigateToTimeTracking()">Время работы</button>
+            <button class="action-button" (click)="navigateToEmployees()">Сотрудники</button>
+        </div>
+
+    </div>
+
+    <!-- Разделительная полоса -->
+    <div class="divider"></div>
+
+    <!-- Основное содержимое -->
+    <div class="main-content">
+        <!-- Поисковая строка -->
+        <div class="search-bar">
+            <input type="text" placeholder="Что надо?" class="search-input" [formControl]="searchControl" />
+        </div>
+        <div class="current-tasks">
+            <h2>Текущие задачи, которые в работе на данный момент</h2>
+            <div *ngIf="currentTasks.length > 0; else noTasks" class="tasks-list">
+                <div *ngFor="let task of currentTasks" class="task-card">
+                    <h3>{{ task.title }}</h3>
+                    <p>{{ task.description }}</p>
+                    <div class="task-meta">
+                        <span>Проект: {{ getProjectName(task.projectId) }}</span>
+                        <span>Статус: {{ task.status }}</span>
+                        <!-- <span>Старт: {{ task.startTime }}</span>
+                        <span>Конец: {{ task.endTime }}</span> -->
+                    </div>
+                </div>
+            </div>
+            <ng-template #noTasks>
+                <p>Нет активных задач в данный момент</p>
+            </ng-template>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<!-- login.component.html -->
+<div class="login-container">
+    <div class="login-header">
+        <h1>Система управления проектами</h1>
+    </div>
+
+    <div class="login-options">
+        <h2>Выберите вашу роль</h2>
+        <div class="role-buttons">
+            <button class="role-button manager" (click)="navigateToManager()">
+                Я начальник
+            </button>
+            <button class="role-button foreman" (click)="navigateToForeman()">
+                Я бригадир
+            </button>
+        </div>
+    </div>
+</div>

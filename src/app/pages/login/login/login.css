@@ -1,0 +1,66 @@
+/* login.css */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.login-header h1 {
+    color: #333;
+    font-size: 2.5rem;
+}
+
+.login-options {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-options h2 {
+    text-align: center;
+    color: #444;
+    margin-bottom: 30px;
+}
+
+.role-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.role-button {
+    padding: 15px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+.role-button.manager {
+    background-color: #4285f4;
+    color: white;
+}
+
+.role-button.foreman {
+    background-color: #34a853;
+    color: white;
+}
+
+.role-button:hover {
+    opacity: 0.9;
+}
