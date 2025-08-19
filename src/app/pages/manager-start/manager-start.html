@@ -1,10 +1,9 @@
-<!-- manager-start.html -->
 <div class="manager-dashboard">
     <!-- Левая панель -->
     <div class="left-panel">
         <div class="projects-section">
             <div class="projects-list">
-                <button *ngFor="let project of projects" class="project-button">
+                <button *ngFor="let project of projects" class="project-button" (click)="navigateToProject(project)">
                     {{ project.name }} ({{ project.activeTasks }}/{{ project.totalTasks }})
                 </button>
             </div>

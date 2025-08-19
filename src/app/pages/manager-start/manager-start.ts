@@ -103,6 +103,13 @@ export class ManagerStart implements OnInit, OnDestroy {
 
 
   ngOnDestroy(): void {
+
+  }
+
+  navigateToProject(project: Project): void {
+    this.router.navigate(['/manager-project', project.id], {
+      state: { project: project } // Передаем данные проекта через state
+    });
   }
 
   getProjectName(projectId: number): string {

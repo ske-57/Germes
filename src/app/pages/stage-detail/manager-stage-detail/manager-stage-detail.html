@@ -1,0 +1,45 @@
+<div class="manager-dashboard">
+    <!-- Левая панель -->
+    <div class="left-panel">
+        <div class="projects-section">
+            <div class="projects-list">
+                <button class="project-button" (click)="backToStages()">← Назад к этапам</button>
+                <button class="project-button active">Проект {{ currentProject.name }}</button>
+                <button class="project-button active small">Этап {{ currentStage.title }}</button>
+            </div>
+        </div>
+
+        <div class="actions-section">
+            <button class="action-button" (click)="toTime()">Время работы</button>
+            <button class="action-button" (click)="toEmployees()">Сотрудники этапа {{ currentStage.title }}</button>
+        </div>
+    </div>
+
+    <!-- Разделитель -->
+    <div class="divider"></div>
+
+    <!-- Основное содержимое -->
+    <div class="main-content">
+
+        <!-- Поиск -->
+        <div class="search-bar">
+            <input class="search-input" type="text" [placeholder]="'Поиск по этапу ' + currentStage.title"
+                [formControl]="searchControl">
+        </div>
+
+        <!-- Виды работ -->
+        <div class="current-stages">
+            <h2>Виды работ</h2>
+
+            <div class="worktypes-list" *ngIf="workTypes.length; else empty">
+                <button class="worktype-pill" *ngFor="let wt of workTypes" (click)="openWorkType(wt)">
+                    {{ wt.name }}
+                </button>
+            </div>
+
+            <ng-template #empty>
+                <p class="no-stage-message">Нет видов работ для этого этапа</p>
+            </ng-template>
+        </div>
+    </div>
+</div>

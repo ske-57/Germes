@@ -1,0 +1,57 @@
+<div class="manager-dashboard">
+    <!-- Левая панель -->
+    <div class="left-panel">
+        <div class="projects-section">
+            <div class="projects-list">
+                <button class="project-button" (click)="navigateBack()">
+                    ← Назад к проектам
+                </button>
+                <button class="project-button active">
+                    Проект: {{ currentProject.name }}
+                </button>
+            </div>
+        </div>
+
+        <div class="actions-section">
+            <button class="action-button" (click)="navigateToTimeTracking()">
+                Время работы по проекту
+            </button>
+            <button class="action-button" (click)="navigateToProjectEmployees()">
+                Сотрудники проекта {{ currentProject.name }}
+            </button>
+        </div>
+    </div>
+
+    <!-- Разделительная полоса -->
+    <div class="divider"></div>
+
+    <!-- Основное содержимое -->
+    <div class="main-content">
+
+        <!-- Поисковая строка -->
+        <div class="search-bar">
+            <input type="text" [placeholder]="'Поиск по проекту ' + currentProject.name" class="search-input"
+                [formControl]="searchControl" />
+        </div>
+
+        <!-- Этапы проекта -->
+        <div class="current-stages">
+            <h2>Этапы проекта {{ currentProject.name }}</h2>
+            <div *ngIf="currentStages.length > 0; else noStages" class="stages-list">
+                <div *ngFor="let stage of currentStages" class="stage-card" role="button" tabindex="0"
+                    (click)="openStage(stage)" (keyup.enter)="openStage(stage)">
+                    <h3>{{ stage.title }}</h3>
+                    <p>{{ stage.description }}</p>
+                    <div class="stage-meta">
+                        <span [class]="'status-' + stage.status">
+                            Статус: {{ stage.status }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <ng-template #noStages>
+                <p>Нет этапов работы проекта</p>
+            </ng-template>
+        </div>
+    </div>
+</div>

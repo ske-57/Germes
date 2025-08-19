@@ -1,0 +1,158 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    background: black;
+    font-family: Arial, sans-serif;
+}
+
+.manager-dashboard {
+    display: flex;
+    height: 97vh;
+    background: #f5f5f5;
+    overflow: hidden;
+}
+
+.left-panel {
+    width: 15%;
+    padding: 10px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, .1);
+}
+
+.divider {
+    width: 1px;
+    background: #e0e0e0;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.project-button {
+    padding: 12px 15px;
+    background: #f8f8f8;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: left;
+    transition: .2s;
+    font-size: 14px;
+}
+
+.project-button:hover {
+    background: #e9e9e9;
+}
+
+.project-button.active {
+    background: #e0e0e0;
+    border-color: #4285f4;
+}
+
+.project-button.small {
+    font-size: 13px;
+}
+
+.actions-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+    padding-bottom: 1%;
+}
+
+.action-button {
+    padding: 12px 15px;
+    background: #4285f4;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.action-button:hover {
+    background: #3367d6;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+    transition: .3s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #4285f4;
+    box-shadow: 0 0 0 3px rgba(66, 133, 244, .2);
+}
+
+.current-stages {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+}
+
+.current-stages h2 {
+    font-size: 18px;
+    color: #333;
+}
+
+.worktypes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 15px;
+}
+
+.worktype-pill {
+    max-width: 380px;
+    text-align: left;
+    padding: 12px 16px;
+    background: #ffe164;
+    /* «жёлтые таблетки» */
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.worktype-pill:hover {
+    filter: brightness(.98);
+}
+
+.no-stage-message {
+    color: #999;
+    font-style: italic;
+    padding: 20px;
+    text-align: center;
+}
