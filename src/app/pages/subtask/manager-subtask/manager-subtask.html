@@ -1,0 +1,50 @@
+<div class="manager-dashboard">
+    <!-- Левая панель -->
+    <div class="left-panel">
+        <div class="projects-section">
+            <div class="projects-list">
+                <button class="project-button" (click)="backToTasks()">← Назад к видам работ</button>
+                <button class="project-button active">Проект: {{ currentProject.name }}</button>
+                <button class="project-button active small">Этап: {{ currentStage.title }}</button>
+                <button class="project-button active small">Вид работ: {{ currentTask?.task_name || '—' }}</button>
+            </div>
+        </div>
+
+        <div class="actions-section">
+            <button class="action-button" (click)="toTime()">Время работы</button>
+            <button class="action-button" (click)="toTaskEmployees()">Сотрудники работ «{{ currentTask?.task_name || '-'
+                }}»</button>
+        </div>
+    </div>
+
+    <!-- Разделитель -->
+    <div class="divider"></div>
+
+    <!-- Контент -->
+    <div class="main-content">
+        <!-- Поиск -->
+        <div class="search-bar">
+            <input class="search-input" type="text"
+                [placeholder]="'Поиск по виду работ «' + (currentTask?.task_name || '-') + '»'"
+                [formControl]="searchControl" />
+        </div>
+
+        <!-- Подзадачи -->
+        <div class="current-subtasks">
+            <h2>Задачи вида работ «{{ currentTask?.task_name || '-' }}»</h2>
+
+            <div class="subtasks-list" *ngIf="subtasks?.length; else empty">
+                <button class="subtask-pill" *ngFor="let s of subtasks" (click)="openSubtask(s)">
+                    <span class="pill-title">{{ s.subtask_name }}</span>
+                    <span class="pill-badge" [class.active]="hasActiveInterval(s)">
+                        {{ s.subtask_status || '—' }}
+                    </span>
+                </button>
+            </div>
+
+            <ng-template #empty>
+                <p class="no-stage-message">Нет задач для этого вида работ</p>
+            </ng-template>
+        </div>
+    </div>
+</div>

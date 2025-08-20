@@ -91,13 +91,13 @@ export class ManagerProjectView implements OnInit, OnDestroy {
       },
       {
         "id": "2",
-        "title": "Этап dva",
+        "title": "Этап второй",
         "description": "Че-то делаем",
         "status": "Planned",
       },
       {
         "id": "3",
-        "title": "Этап tri",
+        "title": "Этап третий",
         "description": "Че-то делаем",
         "status": "InProgress",
       },

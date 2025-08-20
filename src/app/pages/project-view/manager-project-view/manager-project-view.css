@@ -142,9 +142,20 @@ body {
     padding: 15px;
     border: 1px solid #eee;
     width: 50%;
-    border-radius: 6px;
-    background-color: #fff9dc;
+    border-radius: 8px;
+    background-color: #ff953e;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.stage-card:hover {
+    background-color: #ff8127;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 
 .stage-card h3 {
     margin: 0 0 8px 0;

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ManagerService } from '../../services/manager-service/manager-service';
-import { Project, Task } from '../../services/manager-service/manager-service';
+import { ManagerService } from '../../../services/manager-service/manager-service';
+import { Project, Task } from '../../../services/manager-service/manager-service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';

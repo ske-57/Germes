@@ -30,13 +30,13 @@
 
         <!-- Поисковая строка -->
         <div class="search-bar">
-            <input type="text" [placeholder]="'Поиск по проекту ' + currentProject.name" class="search-input"
+            <input type="text" [placeholder]="'Поиск по проекту «' + currentProject.name + '»'" class="search-input"
                 [formControl]="searchControl" />
         </div>
 
         <!-- Этапы проекта -->
         <div class="current-stages">
-            <h2>Этапы проекта {{ currentProject.name }}</h2>
+            <h2>Этапы проекта «{{ currentProject.name }}»</h2>
             <div *ngIf="currentStages.length > 0; else noStages" class="stages-list">
                 <div *ngFor="let stage of currentStages" class="stage-card" role="button" tabindex="0"
                     (click)="openStage(stage)" (keyup.enter)="openStage(stage)">
