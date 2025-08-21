@@ -1,0 +1,115 @@
+<div class="manager-dashboard">
+    <!-- Левая панель -->
+    <div class="left-panel">
+        <div class="projects-section">
+            <div class="projects-list">
+                <button class="project-button" (click)="backToSubtasks()">← Назад к задачам вида работ</button>
+                <button class="project-button active">Проект: {{ currentProject.name }}</button>
+                <button class="project-button active small">Этап: {{ currentStage.title }}</button>
+                <button class="project-button active small">Вид работ: {{ currentTask?.task_name || '—' }}</button>
+                <button class="project-button active small">Задача: {{ currentSubtask?.subtask_name || '—' }}</button>
+            </div>
+        </div>
+
+        <div class="bottom-section">
+            <button class="action-button" (click)="toTime()">Время работы</button>
+            <button class="action-button" (click)="toTaskEmployees()">Сотрудники задачи</button>
+        </div>
+    </div>
+
+    <!-- Разделитель -->
+    <div class="divider"></div>
+
+    <!-- Контент -->
+    <div class="main-content">
+        <!-- Поиск (заглушка) -->
+        <div class="search-bar">
+            <input class="search-input" type="text"
+                [placeholder]="'Поиск по задаче «' + (currentSubtask?.subtask_name || '—') + '»'"
+                [formControl]="searchControl" />
+        </div>
+
+        <!-- Карточка деталей -->
+        <div class="details-card">
+            <h2>Подробности задачи</h2>
+
+            <div class="grid">
+                <div class="col">
+                    <div class="field">
+                        <div class="label">Полная информация</div>
+                        <div class="value">
+                            {{ currentSubtask?.subtask_description || '—' }}
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="label">Кто выполняет</div>
+                        <div class="value">
+                            <span class="chip" *ngFor="let a of details.assignees">{{ a }}</span>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="label">Срок выполнения</div>
+                        <div class="value">{{ details.deadline || '—' }}</div>
+                    </div>
+
+                    <!-- <div class="field"> -->
+                    <!-- <div class="label">Время по интервалам</div> -->
+                    <!-- <div class="value"> -->
+                    <!-- <span class="badge" *ngFor="let t of (currentSubtask?.time_intervals || [])">
+                                {{ t.start_time | date:'short' }}
+                                <ng-container *ngIf="t.end_time">— {{ t.end_time | date:'short' }}</ng-container>
+                                ({{ t.status }})
+                            </span> -->
+                    <!-- <span *ngIf="!(currentSubtask?.time_intervals?.length)">—</span> -->
+                    <!-- </div> -->
+                    <!-- </div> -->
+                    <!-- </div> -->
+
+                    <div class="col">
+                        <div class="field">
+                            <div class="label">Плановое количество</div>
+                            <div class="value strong">{{ details.plannedQty ?? '—' }}</div>
+                        </div>
+
+                        <div class="field">
+                            <div class="label">Фактическое количество</div>
+                            <div class="value strong">{{ details.actualQty ?? '—' }}</div>
+                        </div>
+
+                        <div class="field">
+                            <div class="label">Процент выполнения</div>
+                            <div class="value">
+                                <div class="progress">
+                                    <div class="bar" [style.width.%]="progressPercent || 0"></div>
+                                </div>
+                                <span class="progress-text">{{ progressPercent != null ? (progressPercent + '%') : '—'
+                                    }}</span>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="label">Работа техники</div>
+                            <div class="value">
+                                <span class="badge">Часы: {{ details.machine?.hours ?? '—' }}</span>
+                                <span class="badge">Единицы: {{ details.machine?.units ?? '—' }}</span>
+                            </div>
+                        </div>
+
+                        <!-- <div class="field">
+                            <div class="label">Отчёты (внешние ссылки)</div>
+                            <div class="value links">
+                                <a *ngFor="let r of (details.reportLinks || [])" href="{{ r.href }}" target="_blank"
+                                    rel="noopener">
+                                    📎 {{ r.title }}
+                                </a>
+                                <span *ngIf="!(details.reportLinks?.length)">—</span>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>

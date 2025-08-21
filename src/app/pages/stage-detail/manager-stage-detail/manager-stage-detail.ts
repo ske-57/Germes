@@ -52,7 +52,7 @@ export class ManagerStageDetail implements OnInit, OnDestroy {
 
   ngOnDestroy(): void { }
 
-  /** ⬇️ грузим JSON-структуру */
+  // грузим JSON-структуру
   loadTasks(stageId: string): void {
     this.manager.getWorkTypesByStageJSON(stageId).subscribe(res => this.tasks = res);
   }
@@ -66,7 +66,7 @@ export class ManagerStageDetail implements OnInit, OnDestroy {
 
   openTask(t: WorkTypeTask): void {
     this.router.navigate(
-      ['/manager-project', this.currentProject.id, 'stages', this.currentStage.id, 'subtasks', t.task_id],
+      ['/manager-project', this.currentProject.id, 'stages', this.currentStage.id, 'tasks', t.task_id],
       { state: { project: this.currentProject, stage: this.currentStage, task: t } }
     );
   }

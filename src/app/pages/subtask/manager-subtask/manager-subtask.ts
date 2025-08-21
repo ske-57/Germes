@@ -36,14 +36,14 @@ export class ManagerSubtask implements OnInit {
     if (nav?.extras.state) {
       this.currentProject = (nav.extras.state['project'] as Project) ?? this.currentProject;
       this.currentStage = (nav.extras.state['stage'] as Stage) ?? this.currentStage;
-      this.currentTask = (nav.extras.state['subtask'] as WorkTypeTask) ?? this.currentTask;
+      this.currentTask = (nav.extras.state['task'] as WorkTypeTask) ?? this.currentTask;
       this.subtasks = this.currentTask?.subtasks ?? [];
     }
 
     this.route.paramMap.subscribe(p => {
       const projectId = p.get('projectId');
       const stageId = p.get('stageId');
-      const taskId = p.get('subtaskId');
+      const taskId = p.get('taskId');
 
       if (projectId && !nav?.extras.state) {
         this.currentProject = { id: +projectId, name: `Проект ${projectId}`, totalTasks: 0, activeTasks: 0 };
@@ -80,8 +80,10 @@ export class ManagerSubtask implements OnInit {
   }
 
   openSubtask(s: Subtask): void {
-    // заглушка: переход в детальную задачу/таймшиты и т.п.
-    console.log('open subtask', s.subtask_id);
+    this.router.navigate(
+      ['/manager-project', this.currentProject.id, 'stages', this.currentStage.id, 'tasks', this.currentTask?.task_id, 'subtasks', s.subtask_id],
+      { state: { project: this.currentProject, stage: this.currentStage, task: this.currentTask, subtask: s } }
+    );
   }
 
   hasActiveInterval(s: Subtask): boolean {
