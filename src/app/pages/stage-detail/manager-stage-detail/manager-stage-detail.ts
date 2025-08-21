@@ -6,7 +6,7 @@ import {
   ManagerService,
   Project,
   Stage,
-  WorkTypeTask,   // ⬅️ берём новый тип
+  WorkType,
 } from '../../../services/manager-service/manager-service';
 
 @Component({
@@ -26,48 +26,57 @@ export class ManagerStageDetail implements OnInit, OnDestroy {
   currentProject: Project = { id: 0, name: 'Загрузка…', totalTasks: 0, activeTasks: 0 };
   currentStage: Stage = { id: '', title: 'Загрузка…', status: 'Planned' };
 
-  /** ⬇️ вместо WorkType[] теперь tasks из JSON */
-  tasks: WorkTypeTask[] = [];
+  // вместо WorkType[] теперь tasks из JSON
+  workTypes: WorkType[] = [];
 
   searchControl = new FormControl('');
 
   ngOnInit(): void {
-    const nav = this.router.getCurrentNavigation();
-    if (nav?.extras.state) {
-      this.currentProject = (nav.extras.state['project'] as Project) ?? this.currentProject;
-      this.currentStage = (nav.extras.state['stage'] as Stage) ?? this.currentStage;
-    }
-    this.route.paramMap.subscribe(p => {
-      const projectId = p.get('projectId');
-      const stageId = p.get('stageId');
-      if (projectId && !nav?.extras.state) {
-        this.currentProject = { id: +projectId, name: `Проект ${projectId}`, totalTasks: 0, activeTasks: 0 };
-      }
-      if (stageId) {
-        if (!nav?.extras.state) this.currentStage = { id: stageId, title: `Этап ${stageId}`, status: 'InProgress' };
-        this.loadTasks(stageId);
-      }
-    });
+    this.loadDataFromPreviousPage();
+    this.loadTasks(this.currentStage.id)
   }
 
   ngOnDestroy(): void { }
 
-  // грузим JSON-структуру
+  loadDataFromPreviousPage(): void {
+    const st = history.state;
+    if (!st.project) {
+      console.error("Data from project view is null")
+    } else {
+      if (st?.project) this.currentProject = st.project as Project;
+      if (st?.stage) this.currentStage = st.stage as Stage;
+      // console.log(
+      //   "Data from project view page: ",
+      //   "\nProject: ", st.project,
+      //   "\nStage: ", st.stage);
+    }
+  }
+
+  // Должен будет быть запрос из API (сейчас в manager лежат моки)
   loadTasks(stageId: string): void {
-    this.manager.getWorkTypesByStageJSON(stageId).subscribe(res => this.tasks = res);
+    this.manager.getWorkTypesByStageJSON(stageId).subscribe(
+      res => this.workTypes = res
+    );
   }
 
   backToStages(): void {
-    this.router.navigate(['/manager-project', this.currentProject.id], { state: { project: this.currentProject } });
+    this.router.navigate(['/manager-project', this.currentProject.id],
+      { state: { project: this.currentProject } }
+    );
   }
 
   toTime(): void { this.router.navigate(['/']); }
   toEmployees(): void { this.router.navigate(['/']); }
 
-  openTask(t: WorkTypeTask): void {
+  openTask(workType: WorkType): void {
     this.router.navigate(
-      ['/manager-project', this.currentProject.id, 'stages', this.currentStage.id, 'tasks', t.task_id],
-      { state: { project: this.currentProject, stage: this.currentStage, task: t } }
+      ['/manager-project', this.currentProject.id, 'stages', this.currentStage.id, 'tasks', workType.task_id],
+      { state: { project: this.currentProject, stage: this.currentStage, workType: workType } }
     );
+    // console.log(
+    //   "Send to subtasks page: ",
+    //   "\nProject: ", this.currentProject,
+    //   "\nStage: ", this.currentStage,
+    //   "\nTask: ", task)
   }
 }

@@ -6,13 +6,14 @@
                 <button class="project-button" (click)="backToTasks()">← Назад к видам работ</button>
                 <button class="project-button active">Проект: {{ currentProject.name }}</button>
                 <button class="project-button active small">Этап: {{ currentStage.title }}</button>
-                <button class="project-button active small">Вид работ: {{ currentTask?.task_name || '—' }}</button>
+                <button class="project-button active small">Вид работ: {{ currentWorkType?.task_name || '—' }}</button>
             </div>
         </div>
 
         <div class="actions-section">
             <button class="action-button" (click)="toTime()">Время работы</button>
-            <button class="action-button" (click)="toTaskEmployees()">Сотрудники работ «{{ currentTask?.task_name || '-'
+            <button class="action-button" (click)="toTaskEmployees()">Сотрудники работ «{{ currentWorkType?.task_name ||
+                '-'
                 }}»</button>
         </div>
     </div>
@@ -25,13 +26,13 @@
         <!-- Поиск -->
         <div class="search-bar">
             <input class="search-input" type="text"
-                [placeholder]="'Поиск по виду работ «' + (currentTask?.task_name || '-') + '»'"
+                [placeholder]="'Поиск по виду работ «' + (currentWorkType?.task_name || '-') + '»'"
                 [formControl]="searchControl" />
         </div>
 
         <!-- Подзадачи -->
         <div class="current-subtasks">
-            <h2>Задачи вида работ «{{ currentTask?.task_name || '-' }}»</h2>
+            <h2>Задачи вида работ «{{ currentWorkType?.task_name || '-' }}»</h2>
 
             <div class="subtasks-list" *ngIf="subtasks?.length; else empty">
                 <button class="subtask-pill" *ngFor="let s of subtasks" (click)="openSubtask(s)">

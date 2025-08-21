@@ -27,16 +27,6 @@ export interface Stage {
   status?: 'Planned' | 'InProgress' | 'Done';
 }
 
-/* старый WorkType оставляем — он ещё используется в других местах */
-// export interface WorkType {
-//   id: string;
-//   name: string;
-//   description?: string;
-//   status?: 'Запланировано' | 'В работе' | 'Готово';
-//   executor?: string;
-//   deadline?: string | Date;
-// }
-
 // Под JSON ответ
 export interface TimeInterval {
   start_time: string;
@@ -52,7 +42,7 @@ export interface Subtask {
   time_intervals?: TimeInterval[];
 }
 
-export interface WorkTypeTask {
+export interface WorkType {
   task_id: string;
   task_name: string;
   task_description?: string;
@@ -75,32 +65,13 @@ export class ManagerService {
     return this.http.get<Task[]>(`${this.baseApiUrl}/tasks/current`);
   }
 
-  // Заглушка получения видов работ по этапу (старый формат – можно убрать позже)
-  // getWorkTypesByStage(stageId: string): Observable<WorkType[]> {
-  //   const mock: Record<string, WorkType[]> = {
-  //     '1': [
-  //       { id: 'a', name: 'устройство покрытий и так далее', status: 'В работе' },
-  //       { id: 'b', name: 'Подготовка территорий', status: 'Запланировано' },
-  //     ],
-  //     '2': [
-  //       { id: 'c', name: 'Монтаж основания', status: 'Готово' },
-  //       { id: 'd', name: 'Промеры/геодезия', status: 'Запланировано' },
-  //     ],
-  //     '3': [
-  //       { id: 'e', name: 'Разметка', status: 'В работе' },
-  //       { id: 'f', name: 'Отсыпка', status: 'Запланировано' },
-  //     ],
-  //   };
-  //   return of(mock[stageId] ?? []).pipe(delay(200));
-  // }
-
   // JSON-ответ с task/subtasks как по API
-  getWorkTypesByStageJSON(stageId: string): Observable<WorkTypeTask[]> {
-    const mock: WorkTypeTask[] = [
+  getWorkTypesByStageJSON(stageId: string): Observable<WorkType[]> {
+    const mock: WorkType[] = [
       {
         task_name: 'Подготовка площадки',
         task_description: 'Очистка территории перед заливкой бетона',
-        task_status: 'Заврешено',
+        task_status: 'Завершено',
         subtasks: [
           {
             subtask_name: 'Вывоз мусора',
@@ -109,7 +80,7 @@ export class ManagerService {
             time_intervals: [
               { start_time: '2025-08-16T08:00:00', end_time: '2025-08-16T17:00:00', status: 'closed' }
             ],
-            subtask_status: 'Заврешено'
+            subtask_status: 'Завершено'
           },
           {
             subtask_name: 'Разметка территории',
@@ -118,7 +89,7 @@ export class ManagerService {
             time_intervals: [
               { start_time: '2025-08-16T08:00:00', end_time: '2025-08-16T17:00:00', status: 'closed' }
             ],
-            subtask_status: 'Заврешено'
+            subtask_status: 'Завершено'
           }
         ],
         task_id: 't1'
@@ -140,6 +111,6 @@ export class ManagerService {
         task_id: 't3'
       }
     ];
-    return of(mock).pipe(delay(200));
+    return of(mock);
   }
 }

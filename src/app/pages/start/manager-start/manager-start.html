@@ -27,8 +27,8 @@
         </div>
         <div class="current-tasks">
             <h2>Текущие задачи, которые в работе на данный момент</h2>
-            <div *ngIf="currentTasks.length > 0; else noTasks" class="tasks-list">
-                <div *ngFor="let task of currentTasks" class="task-card">
+            <div *ngIf="tasks.length > 0; else noTasks" class="tasks-list">
+                <div *ngFor="let task of tasks" class="task-card">
                     <h3>{{ task.title }}</h3>
                     <p>{{ task.description }}</p>
                     <div class="task-meta">

@@ -6,7 +6,7 @@ import {
   ManagerService,
   Project,
   Stage,
-  WorkTypeTask,
+  WorkType,
   Subtask,
 } from '../../../services/manager-service/manager-service';
 
@@ -42,10 +42,10 @@ export class ManagerSubtaskDetail implements OnInit {
 
   currentProject: Project = { id: 0, name: 'Загрузка…', totalTasks: 0, activeTasks: 0 };
   currentStage: Stage = { id: '', title: 'Загрузка…', status: 'Planned' };
-  currentTask: WorkTypeTask | null = null;
+  currentWorkType: WorkType | null = null;
   currentSubtask: Subtask | null = null;
 
-  details: SubtaskDetails = {
+  subTaskDetails: SubtaskDetails = {
     assignees: [],
     deadline: undefined,
     plannedQty: undefined,
@@ -55,50 +55,14 @@ export class ManagerSubtaskDetail implements OnInit {
   };
 
   ngOnInit(): void {
-    const nav = this.router.getCurrentNavigation();
-
-    // 1) забираем всё из state, если пришли кликом
-    if (nav?.extras.state) {
-      this.currentProject = (nav.extras.state['project'] as Project) ?? this.currentProject;
-      this.currentStage = (nav.extras.state['stage'] as Stage) ?? this.currentStage;
-      this.currentTask = (nav.extras.state['task'] as WorkTypeTask) ?? this.currentTask;
-      this.currentSubtask = (nav.extras.state['subtask'] as Subtask) ?? this.currentSubtask;
-    }
-
-    // 2) восстанавливаем по параметрам URL при прямом заходе
-    this.route.paramMap.subscribe(p => {
-      const projectId = p.get('projectId');
-      const stageId = p.get('stageId');
-      const taskId = p.get('taskId');
-      const subtaskId = p.get('subtaskId');
-
-      if (projectId && !nav?.extras.state) {
-        this.currentProject = { id: +projectId, name: `Проект ${projectId}`, totalTasks: 0, activeTasks: 0 };
-      }
-      if (stageId && !nav?.extras.state) {
-        this.currentStage = { id: stageId, title: `Этап ${stageId}`, status: 'InProgress' };
-      }
-
-      // если нет task/subtask в state — подтягиваем из JSON-заглушки
-      if (stageId && taskId && (!this.currentTask || !this.currentSubtask)) {
-        this.manager.getWorkTypesByStageJSON(stageId).subscribe(tasks => {
-          this.currentTask = tasks.find(t => t.task_id === taskId) ?? null;
-          if (this.currentTask && subtaskId) {
-            this.currentSubtask = (this.currentTask.subtasks ?? []).find(s => s.subtask_id === subtaskId) ?? null;
-          }
-          this.fillDetailsFallback();
-        });
-      } else {
-        // если всё уже есть — просто заполним детали
-        this.fillDetailsFallback();
-      }
-    });
+    this.loadDataFromPreviousPage();
+    this.GetSubtaskDetailMOCK();
   }
 
   /** Заглушка деталей подзадачи:
-   * В реальности эти поля прилетят отдельным API. Пока даём мок по subtask_id.
+   * В реальности эти поля прилетят отдельным API (loadSubtaskDetail method). Пока даём мок по subtask_id.
    */
-  private fillDetailsFallback(): void {
+  private GetSubtaskDetailMOCK(): void {
     const id = this.currentSubtask?.subtask_id ?? 'unknown';
     const dict: Record<string, SubtaskDetails> = {
       'st1': {
@@ -122,7 +86,7 @@ export class ManagerSubtaskDetail implements OnInit {
       }
     };
 
-    this.details = dict[id] ?? {
+    this.subTaskDetails = dict[id] ?? {
       assignees: ['—'],
       deadline: undefined,
       plannedQty: undefined,
@@ -133,22 +97,46 @@ export class ManagerSubtaskDetail implements OnInit {
   }
 
   get progressPercent(): number | null {
-    const p = this.details.plannedQty;
-    const a = this.details.actualQty;
+    const p = this.subTaskDetails.plannedQty;
+    const a = this.subTaskDetails.actualQty;
     if (p && p > 0 && a != null) {
       return Math.min(100, Math.round((a / p) * 100));
     }
     return null;
   }
 
+  // Тут будет загрузка всей инфы по задаче из API
+  loadSubtaskDetail(): void {
+
+  }
+
+  loadDataFromPreviousPage(): void {
+    const st = history.state;
+    if (st) {
+      this.currentProject = st.project as Project;
+      this.currentStage = st.stage as Stage;
+      this.currentWorkType = st.workType as WorkType;
+      this.currentSubtask = st.subtask as Subtask;
+      // console.warn(
+      //   "Data from stage detail page: ",
+      //   "\nProject: ", st.project,
+      //   "\nStage: ", st.stage,
+      //   "\nTask: ", st.workType,
+      //   "\nSubtask: ", st.subtask);
+    } else {
+      console.error("State is empty!")
+    }
+  }
+
   // Навигация
   backToSubtasks(): void {
     this.router.navigate(
-      ['/manager-project', this.currentProject.id, 'stages', this.currentStage.id, 'tasks', this.currentTask?.task_id],
-      { state: { project: this.currentProject, stage: this.currentStage, task: this.currentTask } }
+      ['/manager-project', this.currentProject.id, 'stages', this.currentStage.id, 'tasks', this.currentWorkType?.task_id],
+      { state: { project: this.currentProject, stage: this.currentStage, workType: this.currentWorkType } }
     );
   }
 
   toTime(): void { this.router.navigate(['/']); }
+
   toTaskEmployees(): void { this.router.navigate(['/']); } // сотрудники именно этой подзадачи (будет позже)
 }

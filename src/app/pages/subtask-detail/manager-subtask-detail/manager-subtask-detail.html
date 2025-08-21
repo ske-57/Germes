@@ -6,7 +6,7 @@
                 <button class="project-button" (click)="backToSubtasks()">← Назад к задачам вида работ</button>
                 <button class="project-button active">Проект: {{ currentProject.name }}</button>
                 <button class="project-button active small">Этап: {{ currentStage.title }}</button>
-                <button class="project-button active small">Вид работ: {{ currentTask?.task_name || '—' }}</button>
+                <button class="project-button active small">Вид работ: {{ currentWorkType?.task_name || '—' }}</button>
                 <button class="project-button active small">Задача: {{ currentSubtask?.subtask_name || '—' }}</button>
             </div>
         </div>
@@ -45,13 +45,13 @@
                     <div class="field">
                         <div class="label">Кто выполняет</div>
                         <div class="value">
-                            <span class="chip" *ngFor="let a of details.assignees">{{ a }}</span>
+                            <span class="chip" *ngFor="let a of subTaskDetails.assignees">{{ a }}</span>
                         </div>
                     </div>
 
                     <div class="field">
                         <div class="label">Срок выполнения</div>
-                        <div class="value">{{ details.deadline || '—' }}</div>
+                        <div class="value">{{ subTaskDetails.deadline || '—' }}</div>
                     </div>
 
                     <!-- <div class="field"> -->
@@ -70,12 +70,12 @@
                     <div class="col">
                         <div class="field">
                             <div class="label">Плановое количество</div>
-                            <div class="value strong">{{ details.plannedQty ?? '—' }}</div>
+                            <div class="value strong">{{ subTaskDetails.plannedQty ?? '—' }}</div>
                         </div>
 
                         <div class="field">
                             <div class="label">Фактическое количество</div>
-                            <div class="value strong">{{ details.actualQty ?? '—' }}</div>
+                            <div class="value strong">{{ subTaskDetails.actualQty ?? '—' }}</div>
                         </div>
 
                         <div class="field">
@@ -92,8 +92,8 @@
                         <div class="field">
                             <div class="label">Работа техники</div>
                             <div class="value">
-                                <span class="badge">Часы: {{ details.machine?.hours ?? '—' }}</span>
-                                <span class="badge">Единицы: {{ details.machine?.units ?? '—' }}</span>
+                                <span class="badge">Часы: {{ subTaskDetails.machine?.hours ?? '—' }}</span>
+                                <span class="badge">Единицы: {{ subTaskDetails.machine?.units ?? '—' }}</span>
                             </div>
                         </div>
 

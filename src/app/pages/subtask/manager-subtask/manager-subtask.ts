@@ -6,7 +6,7 @@ import {
   ManagerService,
   Project,
   Stage,
-  WorkTypeTask,
+  WorkType,
   Subtask
 } from '../../../services/manager-service/manager-service';
 
@@ -26,40 +26,43 @@ export class ManagerSubtask implements OnInit {
 
   currentProject: Project = { id: 0, name: 'Загрузка…', totalTasks: 0, activeTasks: 0 };
   currentStage: Stage = { id: '', title: 'Загрузка…', status: 'Planned' };
-  currentTask: WorkTypeTask | null = null;
+  currentWorkType: WorkType | null = null;
 
   subtasks: Subtask[] = [];
   searchControl = new FormControl('');
 
   ngOnInit(): void {
-    const nav = this.router.getCurrentNavigation();
-    if (nav?.extras.state) {
-      this.currentProject = (nav.extras.state['project'] as Project) ?? this.currentProject;
-      this.currentStage = (nav.extras.state['stage'] as Stage) ?? this.currentStage;
-      this.currentTask = (nav.extras.state['task'] as WorkTypeTask) ?? this.currentTask;
-      this.subtasks = this.currentTask?.subtasks ?? [];
+    // Оба метода загружают информацию с предыдущей страницы
+    this.loadDataFromPreviousPage();
+    this.loadSubtasks();
+  }
+
+  loadDataFromPreviousPage(): void {
+    const st = history.state;
+    if (st) {
+      this.currentProject = st.project as Project;
+      this.currentStage = st.stage as Stage;
+      this.currentWorkType = st.workType as WorkType;
+      // console.log(
+      //   "Data from stage detail page: ",
+      //   "\nProject: ", st.project,
+      //   "\nStage: ", st.stage,
+      //   "\WorkTypes: ", st.task);
+    } else {
+      console.error("State is empty!")
     }
+  }
 
-    this.route.paramMap.subscribe(p => {
-      const projectId = p.get('projectId');
-      const stageId = p.get('stageId');
-      const taskId = p.get('taskId');
-
-      if (projectId && !nav?.extras.state) {
-        this.currentProject = { id: +projectId, name: `Проект ${projectId}`, totalTasks: 0, activeTasks: 0 };
-      }
-      if (stageId && !nav?.extras.state) {
-        this.currentStage = { id: stageId, title: `Этап ${stageId}`, status: 'InProgress' };
-      }
-
-      if (stageId && taskId && !this.currentTask) {
-        // восстанавливаем таск по JSON-заглушке
-        this.manager.getWorkTypesByStageJSON(stageId).subscribe(tasks => {
-          this.currentTask = tasks.find(t => t.task_id === taskId) ?? null;
-          this.subtasks = this.currentTask?.subtasks ?? [];
-        });
-      }
-    });
+  loadSubtasks(): void {
+    if (this.currentWorkType?.subtasks) {
+      this.subtasks = this.currentWorkType?.subtasks;
+    }
+    else {
+      console.error(
+        "Subtasks or Task is empty",
+        "\nTask: ", this.currentWorkType,
+        "\nSubtasks: ", this.subtasks);
+    }
   }
 
   backToTasks(): void {
@@ -75,15 +78,19 @@ export class ManagerSubtask implements OnInit {
 
   toTaskEmployees(): void {
     // Заглушка — переход к списку сотрудников данного WorkType
-    console.log("Открыть сотрудников для", this.currentTask?.task_name);
-    this.router.navigate(['/']); // потом можно заменить на реальный роут
+    console.log("Открыть сотрудников для", this.currentWorkType?.task_name);
+    this.router.navigate(['/']); // потом заменить на реальный роут
   }
 
-  openSubtask(s: Subtask): void {
+  openSubtask(subtask: Subtask): void {
     this.router.navigate(
-      ['/manager-project', this.currentProject.id, 'stages', this.currentStage.id, 'tasks', this.currentTask?.task_id, 'subtasks', s.subtask_id],
-      { state: { project: this.currentProject, stage: this.currentStage, task: this.currentTask, subtask: s } }
+      ['/manager-project', this.currentProject.id, 'stages', this.currentStage.id, 'tasks', this.currentWorkType?.task_id, 'subtasks', subtask.subtask_id],
+      { state: { project: this.currentProject, stage: this.currentStage, workType: this.currentWorkType, subtask: subtask } }
     );
+    // console.log(
+    //   "Send to subtask detail page: ",
+    //   "\nTask: ", this.currentTask,
+    //   "\nSubtasks: ", this.subtasks);
   }
 
   hasActiveInterval(s: Subtask): boolean {

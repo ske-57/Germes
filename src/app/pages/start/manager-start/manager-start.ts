@@ -3,7 +3,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ManagerService } from '../../../services/manager-service/manager-service';
 import { Project, Task } from '../../../services/manager-service/manager-service';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -15,7 +14,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 })
 export class ManagerStart implements OnInit, OnDestroy {
   projects: Project[] = [];
-  currentTasks: Task[] = [];
+  tasks: Task[] = [];
   searchControl = new FormControl("");
 
 
@@ -24,8 +23,20 @@ export class ManagerStart implements OnInit, OnDestroy {
     private managerService: ManagerService,
   ) { };
 
-
   ngOnInit(): void {
+    /// Должны будут дергать API
+    this.loadProjectData();
+    this.loadAllTasks();
+  }
+
+
+
+  ngOnDestroy(): void {
+
+  }
+
+  // Моковая реализация
+  loadProjectData(): void {
     this.projects = [
       { id: 1, name: 'Проект 1', activeTasks: 11, totalTasks: 31 },
       { id: 2, name: 'Проект 2', activeTasks: 17, totalTasks: 27 },
@@ -34,7 +45,11 @@ export class ManagerStart implements OnInit, OnDestroy {
       { id: 5, name: 'Проект 5', activeTasks: 23, totalTasks: 109 },
       { id: 6, name: 'Проект 6', activeTasks: 40, totalTasks: 40 },
     ];
-    this.currentTasks = [
+  }
+
+  // Моковая реализация
+  loadAllTasks(): void {
+    this.tasks = [
       {
         id: 1,
         projectId: 1,
@@ -96,20 +111,13 @@ export class ManagerStart implements OnInit, OnDestroy {
         endTime: new Date('2023-06-10'),
       }
     ];
-    // Должны быть загрузка данных, пока что тут лежат моки
-    //this.managerService.getProjetcs();
-  }
-
-
-
-  ngOnDestroy(): void {
-
   }
 
   navigateToProject(project: Project): void {
-    this.router.navigate(['/manager-project', project.id], {
-      state: { project: project } // Передаем данные проекта через state
-    });
+    this.router.navigate(['/manager-project', project.id],
+      { state: { project: project } }
+    );
+    // console.log("Send to next page:", project);
   }
 
   getProjectName(projectId: number): string {
@@ -125,3 +133,4 @@ export class ManagerStart implements OnInit, OnDestroy {
     this.router.navigate(['/timeTracking'])
   }
 }
+

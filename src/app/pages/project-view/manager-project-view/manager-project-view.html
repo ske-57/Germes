@@ -13,7 +13,7 @@
         </div>
 
         <div class="actions-section">
-            <button class="action-button" (click)="navigateToTimeTracking()">
+            <button class="action-button" (click)="toTime()">
                 Время работы по проекту
             </button>
             <button class="action-button" (click)="navigateToProjectEmployees()">
@@ -37,8 +37,8 @@
         <!-- Этапы проекта -->
         <div class="current-stages">
             <h2>Этапы проекта «{{ currentProject.name }}»</h2>
-            <div *ngIf="currentStages.length > 0; else noStages" class="stages-list">
-                <div *ngFor="let stage of currentStages" class="stage-card" role="button" tabindex="0"
+            <div *ngIf="stages.length > 0; else noStages" class="stages-list">
+                <div *ngFor="let stage of stages" class="stage-card" role="button" tabindex="0"
                     (click)="openStage(stage)" (keyup.enter)="openStage(stage)">
                     <h3>{{ stage.title }}</h3>
                     <p>{{ stage.description }}</p>
