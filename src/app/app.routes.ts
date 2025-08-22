@@ -8,12 +8,12 @@ import { ManagerSubtask } from './pages/subtask/manager-subtask/manager-subtask'
 import { ManagerSubtaskDetail } from './pages/subtask-detail/manager-subtask-detail/manager-subtask-detail';
 
 export const routes: Routes = [
-    { path: '', component: Login, pathMatch: 'full' },
+    { path: 'login', component: Login, pathMatch: 'full' },
     { path: 'manager', component: ManagerStart },
     { path: 'foreman', component: ForemanStart },
     { path: 'manager-project/:projectId/stages/:stageId/tasks/:taskId/subtasks/:subtaskId', component: ManagerSubtaskDetail },
     { path: 'manager-project/:projectId/stages/:stageId/tasks/:taskId', component: ManagerSubtask },
     { path: 'manager-project/:projectId/stages/:stageId', component: ManagerStageDetail },
     { path: 'manager-project/:id', component: ManagerProjectView },
-    { path: '**', redirectTo: '' }
+    { path: '**', redirectTo: 'login' }
 ];
