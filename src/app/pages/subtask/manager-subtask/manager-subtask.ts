@@ -6,7 +6,7 @@ import {
   ManagerService,
   Project,
   Stage,
-  WorkType,
+  Task,
   Subtask
 } from '../../../services/manager-service/manager-service';
 
@@ -24,9 +24,9 @@ export class ManagerSubtask implements OnInit {
     private manager: ManagerService
   ) { }
 
-  currentProject: Project = { id: 0, name: 'Загрузка…', totalTasks: 0, activeTasks: 0 };
+  currentProject: Project = { project_id: "0", project_name: 'Загрузка…', totalTasks: 0, activeTasks: 0 };
   currentStage: Stage = { id: '', title: 'Загрузка…', status: 'Planned' };
-  currentWorkType: WorkType | null = null;
+  currentTask: Task | null = null;
 
   subtasks: Subtask[] = [];
   searchControl = new FormControl('');
@@ -42,7 +42,7 @@ export class ManagerSubtask implements OnInit {
     if (st) {
       this.currentProject = st.project as Project;
       this.currentStage = st.stage as Stage;
-      this.currentWorkType = st.workType as WorkType;
+      this.currentTask = st.task as Task;
       // console.log(
       //   "Data from stage detail page: ",
       //   "\nProject: ", st.project,
@@ -54,20 +54,20 @@ export class ManagerSubtask implements OnInit {
   }
 
   loadSubtasks(): void {
-    if (this.currentWorkType?.subtasks) {
-      this.subtasks = this.currentWorkType?.subtasks;
+    if (this.currentTask?.subtasks) {
+      this.subtasks = this.currentTask?.subtasks;
     }
     else {
       console.error(
         "Subtasks or Task is empty",
-        "\nTask: ", this.currentWorkType,
+        "\nTask: ", this.currentTask,
         "\nSubtasks: ", this.subtasks);
     }
   }
 
   backToTasks(): void {
     this.router.navigate(
-      ['/manager-project', this.currentProject.id, 'stages', this.currentStage.id],
+      ['/manager-project', this.currentProject.project_id, 'stages', this.currentStage.id],
       { state: { project: this.currentProject, stage: this.currentStage } }
     );
   }
@@ -78,14 +78,14 @@ export class ManagerSubtask implements OnInit {
 
   toTaskEmployees(): void {
     // Заглушка — переход к списку сотрудников данного WorkType
-    console.log("Открыть сотрудников для", this.currentWorkType?.task_name);
+    console.log("Открыть сотрудников для", this.currentTask?.task_name);
     this.router.navigate(['/']); // потом заменить на реальный роут
   }
 
   openSubtask(subtask: Subtask): void {
     this.router.navigate(
-      ['/manager-project', this.currentProject.id, 'stages', this.currentStage.id, 'tasks', this.currentWorkType?.task_id, 'subtasks', subtask.subtask_id],
-      { state: { project: this.currentProject, stage: this.currentStage, workType: this.currentWorkType, subtask: subtask } }
+      ['/manager-project', this.currentProject.project_id, 'stages', this.currentStage.id, 'tasks', this.currentTask?.task_id, 'subtasks', subtask.subtask_id],
+      { state: { project: this.currentProject, stage: this.currentStage, task: this.currentTask, subtask: subtask } }
     );
     // console.log(
     //   "Send to subtask detail page: ",

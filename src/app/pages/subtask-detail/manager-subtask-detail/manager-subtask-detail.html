@@ -4,9 +4,9 @@
         <div class="projects-section">
             <div class="projects-list">
                 <button class="project-button" (click)="backToSubtasks()">← Назад к задачам вида работ</button>
-                <button class="project-button active">Проект: {{ currentProject.name }}</button>
+                <button class="project-button active">Проект: {{ currentProject.project_name }}</button>
                 <button class="project-button active small">Этап: {{ currentStage.title }}</button>
-                <button class="project-button active small">Вид работ: {{ currentWorkType?.task_name || '—' }}</button>
+                <button class="project-button active small">Вид работ: {{ currentTask?.task_name || '—' }}</button>
                 <button class="project-button active small">Задача: {{ currentSubtask?.subtask_name || '—' }}</button>
             </div>
         </div>

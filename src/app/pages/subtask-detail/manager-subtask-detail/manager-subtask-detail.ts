@@ -6,7 +6,7 @@ import {
   ManagerService,
   Project,
   Stage,
-  WorkType,
+  Task,
   Subtask,
 } from '../../../services/manager-service/manager-service';
 
@@ -40,9 +40,9 @@ export class ManagerSubtaskDetail implements OnInit {
 
   searchControl = new FormControl('');
 
-  currentProject: Project = { id: 0, name: 'Загрузка…', totalTasks: 0, activeTasks: 0 };
+  currentProject: Project = { project_id: "0", project_name: 'Загрузка…', totalTasks: 0, activeTasks: 0 };
   currentStage: Stage = { id: '', title: 'Загрузка…', status: 'Planned' };
-  currentWorkType: WorkType | null = null;
+  currentTask: Task | null = null;
   currentSubtask: Subtask | null = null;
 
   subTaskDetails: SubtaskDetails = {
@@ -72,7 +72,7 @@ export class ManagerSubtaskDetail implements OnInit {
         actualQty: 100,
         machine: { hours: 12, units: 3 },
         reportLinks: [
-          { title: 'Акт №101', href: '#' },
+          { title: 'Акт №101 Update', href: '#' },
           { title: 'Фотоотчет', href: '#' },
         ]
       },
@@ -82,7 +82,7 @@ export class ManagerSubtaskDetail implements OnInit {
         plannedQty: 80,
         actualQty: 60,
         machine: { hours: 6, units: 1 },
-        reportLinks: [{ title: 'Замеры (xlsx)', href: '#' }]
+        reportLinks: [{ title: 'Замеры (xlsx) Update', href: '#' }]
       }
     };
 
@@ -115,7 +115,7 @@ export class ManagerSubtaskDetail implements OnInit {
     if (st) {
       this.currentProject = st.project as Project;
       this.currentStage = st.stage as Stage;
-      this.currentWorkType = st.workType as WorkType;
+      this.currentTask = st.task as Task;
       this.currentSubtask = st.subtask as Subtask;
       // console.warn(
       //   "Data from stage detail page: ",
@@ -131,8 +131,8 @@ export class ManagerSubtaskDetail implements OnInit {
   // Навигация
   backToSubtasks(): void {
     this.router.navigate(
-      ['/manager-project', this.currentProject.id, 'stages', this.currentStage.id, 'tasks', this.currentWorkType?.task_id],
-      { state: { project: this.currentProject, stage: this.currentStage, workType: this.currentWorkType } }
+      ['/manager-project', this.currentProject.project_id, 'stages', this.currentStage.id, 'tasks', this.currentTask?.task_id],
+      { state: { project: this.currentProject, stage: this.currentStage, task: this.currentTask } }
     );
   }
 

@@ -19,12 +19,11 @@ export class ManagerProjectView implements OnInit, OnDestroy {
   ) { }
 
   currentProject: Project = {
-    "id": 0,
-    "name": "Загрузка...",
+    "project_id": "0",
+    "project_name": "Загрузка...",
     "activeTasks": 0,
     "totalTasks": 0,
   };
-  // currentTasks: any;
   searchControl = new FormControl("");
   stages: Stage[] = [];
 
@@ -48,28 +47,24 @@ export class ManagerProjectView implements OnInit, OnDestroy {
     }
   }
 
-  // fetchProjectFromApi(projectId: number): void {
-  //   // Должен быть API запрос
-  // }
-
   loadStages(): void {
     // Загрузка этапов проекта (потом будем из APi)
     this.stages = [
       {
         "id": "1",
-        "title": "Этап первый",
+        "title": "Stage Frist",
         "description": "Че-то делаем",
         "status": "Done",
       },
       {
         "id": "2",
-        "title": "Этап второй",
+        "title": "Stage Second",
         "description": "Че-то делаем",
         "status": "Planned",
       },
       {
         "id": "3",
-        "title": "Этап третий",
+        "title": "Stage Third",
         "description": "Че-то делаем",
         "status": "InProgress",
       },
@@ -78,7 +73,7 @@ export class ManagerProjectView implements OnInit, OnDestroy {
 
   openStage(stage: Stage): void {
     this.router.navigate(
-      ['/manager-project', this.currentProject.id, 'stages', stage.id],
+      ['/manager-project', this.currentProject.project_id, 'stages', stage.id],
       { state: { project: this.currentProject, stage: stage } }
     );
     // console.log(

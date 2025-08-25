@@ -7,7 +7,7 @@
                     ← Назад к проектам
                 </button>
                 <button class="project-button active">
-                    Проект: {{ currentProject.name }}
+                    Проект: {{ currentProject.project_name }}
                 </button>
             </div>
         </div>
@@ -17,7 +17,8 @@
                 Время работы по проекту
             </button>
             <button class="action-button" (click)="navigateToProjectEmployees()">
-                Сотрудники проекта {{ currentProject.name }}
+                Сотрудники проекта
+                «{{ currentProject.project_name }}»
             </button>
         </div>
     </div>
@@ -30,13 +31,13 @@
 
         <!-- Поисковая строка -->
         <div class="search-bar">
-            <input type="text" [placeholder]="'Поиск по проекту «' + currentProject.name + '»'" class="search-input"
-                [formControl]="searchControl" />
+            <input type="text" [placeholder]="'Поиск по проекту «' + currentProject.project_name + '»'"
+                class="search-input" [formControl]="searchControl" />
         </div>
 
         <!-- Этапы проекта -->
         <div class="current-stages">
-            <h2>Этапы проекта «{{ currentProject.name }}»</h2>
+            <h2>Этапы проекта «{{ currentProject.project_name }}»</h2>
             <div *ngIf="stages.length > 0; else noStages" class="stages-list">
                 <div *ngFor="let stage of stages" class="stage-card" role="button" tabindex="0"
                     (click)="openStage(stage)" (keyup.enter)="openStage(stage)">

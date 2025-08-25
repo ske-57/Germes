@@ -4,7 +4,7 @@
         <div class="projects-section">
             <div class="projects-list">
                 <button class="project-button" (click)="backToStages()">← Назад к этапам</button>
-                <button class="project-button active">Проект: {{ currentProject.name }}</button>
+                <button class="project-button active">Проект: {{ currentProject.project_name }}</button>
                 <button class="project-button active small">Этап: {{ currentStage.title }}</button>
             </div>
         </div>
@@ -29,8 +29,8 @@
         <div class="current-types">
             <h2>Виды работ этапа «{{ currentStage.title }}»</h2>
 
-            <div class="worktypes-list" *ngIf="workTypes?.length; else empty">
-                <button class="worktype-pill" *ngFor="let t of workTypes" (click)="openTask(t)">
+            <div class="worktypes-list" *ngIf="tasks?.length; else empty">
+                <button class="worktype-pill" *ngFor="let t of tasks" (click)="openTask(t)">
                     {{ t.task_name }}
                 </button>
             </div>

@@ -4,7 +4,7 @@
         <div class="projects-section">
             <div class="projects-list">
                 <button *ngFor="let project of projects" class="project-button" (click)="navigateToProject(project)">
-                    {{ project.name }} ({{ project.activeTasks }}/{{ project.totalTasks }})
+                    {{ project.project_name }} ({{ project.activeTasks }}/{{ project.totalTasks }})
                 </button>
             </div>
         </div>
@@ -29,11 +29,11 @@
             <h2>Текущие задачи, которые в работе на данный момент</h2>
             <div *ngIf="tasks.length > 0; else noTasks" class="tasks-list">
                 <div *ngFor="let task of tasks" class="task-card">
-                    <h3>{{ task.title }}</h3>
-                    <p>{{ task.description }}</p>
+                    <h3>{{ task.task_name }}</h3>
+                    <p>{{ task.task_description }}</p>
                     <div class="task-meta">
-                        <span>Проект: {{ getProjectName(task.projectId) }}</span>
-                        <span>Статус: {{ task.status }}</span>
+                        <span>Проект: {{ getProjectName(task.task_id) }}</span>
+                        <span>Статус: {{ task.task_status }}</span>
                         <!-- <span>Старт: {{ task.startTime }}</span>
                         <span>Конец: {{ task.endTime }}</span> -->
                     </div>

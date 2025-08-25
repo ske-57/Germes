@@ -6,7 +6,7 @@ import {
   ManagerService,
   Project,
   Stage,
-  WorkType,
+  Task
 } from '../../../services/manager-service/manager-service';
 
 @Component({
@@ -23,11 +23,11 @@ export class ManagerStageDetail implements OnInit, OnDestroy {
     private manager: ManagerService
   ) { }
 
-  currentProject: Project = { id: 0, name: 'Загрузка…', totalTasks: 0, activeTasks: 0 };
+  currentProject: Project = { project_id: "0", project_name: 'Загрузка…', totalTasks: 0, activeTasks: 0 };
   currentStage: Stage = { id: '', title: 'Загрузка…', status: 'Planned' };
 
   // вместо WorkType[] теперь tasks из JSON
-  workTypes: WorkType[] = [];
+  tasks: Task[] = [];
 
   searchControl = new FormControl('');
 
@@ -54,13 +54,13 @@ export class ManagerStageDetail implements OnInit, OnDestroy {
 
   // Должен будет быть запрос из API (сейчас в manager лежат моки)
   loadTasks(stageId: string): void {
-    this.manager.getWorkTypesByStageJSON(stageId).subscribe(
-      res => this.workTypes = res
+    this.manager.getTasks(stageId).subscribe(
+      res => this.tasks = res
     );
   }
 
   backToStages(): void {
-    this.router.navigate(['/manager-project', this.currentProject.id],
+    this.router.navigate(['/manager-project', this.currentProject.project_id],
       { state: { project: this.currentProject } }
     );
   }
@@ -68,10 +68,10 @@ export class ManagerStageDetail implements OnInit, OnDestroy {
   toTime(): void { this.router.navigate(['/']); }
   toEmployees(): void { this.router.navigate(['/']); }
 
-  openTask(workType: WorkType): void {
+  openTask(task: Task): void {
     this.router.navigate(
-      ['/manager-project', this.currentProject.id, 'stages', this.currentStage.id, 'tasks', workType.task_id],
-      { state: { project: this.currentProject, stage: this.currentStage, workType: workType } }
+      ['/manager-project', this.currentProject.project_id, 'stages', this.currentStage.id, 'tasks', task.task_id],
+      { state: { project: this.currentProject, stage: this.currentStage, task: task } }
     );
     // console.log(
     //   "Send to subtasks page: ",
